@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Hello, Thymeleaf</title>
+    <script th:src="@{/webjars/react/17.0.2/umd/react.development.js}"></script>
+    <script
+      th:src="@{/webjars/react-dom/17.0.2/umd/react-dom.development.js}"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script th:src="@{/dist/react-cc-lib.umd.js}"></script>
+    <link th:href="@{/dist/main.css}" rel="stylesheet" />
+    <style>
+      .greeting {
+        color: blue;
+        font-size: xx-large;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="bg-red-300">Welcome, <span th:text="${name}">User</span>!</h1>
+    <div id="root"></div>
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      var name = /*[[${name}]]*/ "User";
+      console.log("Hello, " + name + "!");
+      /*]]>*/
+    </script>
+    <script defer th:inline="javascript" type="text/babel">
+      console.log(ReactCCLib.isBiggerThanTen(11)); // ✅ Correct way
+      // const root = ReactDOM.createRoot(document.getElementById("root")); // ✅ Use createRoot
+      // root.render(React.createElement(ReactCCLib.Button, { title: "User" })); // ✅ Correct way
+
+      const message = name;
+      const HelloMessage = ReactCCLib.HelloMessage("name");
+      const Button = ReactCCLib.Button;
+
+      console.log(typeof Button);
+      console.log(typeof ReactCCLib.Button);
+      console.log(typeof HelloMessage);
+      console.log(typeof ReactCCLib.HelloMessage);
+      console.log(typeof ReactCCLib.HomePage);
+      console.log(ReactCCLib.HomePage);
+      ReactCCLib.HomePage();
+      console.log(ReactCCLib.HomePage());
+      console.log(<ReactCCLib.HomePage />);
+      // ReactDOM.render(
+      //   ReactCCLib.HelloMessage(name),
+      //   document.getElementById("root")
+      // );
+
+      ReactDOM.render(
+        React.createElement(
+          "div",
+          null,
+          ReactCCLib.HelloMessage(name),
+          ReactCCLib.HomePage(),
+          ReactCCLib.Button({
+            title: "User",
+            onClick: () => alert("Hello, " + name),
+            value: "Click Me!",
+            text: "Click Me!",
+            id: "btn",
+            className: "greeting bg-red-300",
+          })
+        ),
+        document.getElementById("root")
+      );
+      document.getElementById("btn").innerHTML = "Click Me!";
+    </script>
+  </body>
+</html>
